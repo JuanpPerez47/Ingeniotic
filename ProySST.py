@@ -77,7 +77,8 @@ if procesar:
 
         # Texto a voz
         texto = "Objetos detectados: " + ", ".join(etiquetas_detectadas)
-        tts = gTTS(text=texto, lang='es')
+        resultado_limpio = texto.replace('*', '').replace('_', '').replace('/', '')
+        tts = gTTS(text=resultado_limpio, lang='es')
         temp_audio = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3")
         tts.save(temp_audio.name)
         st.audio(temp_audio.name, format="audio/mp3")
