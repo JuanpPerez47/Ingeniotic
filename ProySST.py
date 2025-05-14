@@ -9,7 +9,7 @@ from ultralytics import YOLO
 from gtts import gTTS
 
 # Cargar modelos
-modelo_objetos = YOLO("yolo11n.pt")  # Reemplaza con tu modelo entrenado si no es el original de yolov8n
+modelo_objetos = YOLO("best.pt")  # Reemplaza con tu modelo entrenado si no es el original de yolov8n
 
 # Configuración de la página
 st.set_page_config(page_title="Sistema de Reconocimiento de Objetos", layout="wide")
