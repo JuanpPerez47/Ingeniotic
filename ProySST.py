@@ -86,21 +86,11 @@ if imagen_original:
             st.image(persona_img, caption="Detección de PPE", channels="BGR", width=350)
             st.markdown("🔍 **Elementos detectados:** " + ", ".join(etiquetas_detectadas))
 
-            requeridos = {"casco", "chaleco", "botas"}
-            presentes = set(etiquetas_detectadas)
-
-            if requeridos.issubset(presentes):
-                st.success("✅ Cumple con los requisitos para el ingreso 🏭")
-            else:
-                faltantes = requeridos - presentes
-                st.error(f"🚨 No cumple con el PPE. Faltan: {', '.join(faltantes)}")
 
             # 🔊 Texto a voz con gTTS
             texto_prediccion = f"La persona {i} tiene los siguientes elementos: {', '.join(etiquetas_detectadas)}. "
             if requeridos.issubset(presentes):
                 texto_prediccion += "Cumple con los requisitos de protección."
-            else:
-                texto_prediccion += f"No cumple con el equipo requerido. Faltan: {', '.join(faltantes)}."
 
             tts = gTTS(text=texto_prediccion, lang='es')
             temp_audio = tempfile.NamedTemporaryFile(delete=True, suffix=".mp3")
