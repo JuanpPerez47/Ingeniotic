@@ -1,4 +1,9 @@
 import streamlit as st
+
+# ❗Esta debe ser la PRIMERA instrucción Streamlit
+st.set_page_config(page_title="Sistema de Reconocimiento de Objetos", layout="wide")
+
+# ✅ Luego importa lo demás
 from PIL import Image
 import cv2
 import numpy as np
@@ -10,11 +15,11 @@ from gtts import gTTS
 
 # Cargar modelos
 modelo_objetos = YOLO("best.pt")  # Reemplaza con tu modelo entrenado si no es el original de yolov8n
+
+# Mostrar clases después de set_page_config
 st.write("Clases del modelo:", modelo_objetos.names)
 
-# Configuración de la página
-st.set_page_config(page_title="Sistema de Reconocimiento de Objetos", layout="wide")
-
+# Encabezado
 st.image("Vogue Editors.jpeg", width=1200)
 st.markdown(
     "<h2 style='text-align: center; color: #003366;'>Sistema de Detección de Objetos en Laboratorio</h2>",
@@ -103,4 +108,3 @@ if procesar:
 # Pie de página
 st.markdown("---")
 st.markdown("<center><sub>📌 Autor: Juan Pablo Pérez Bayona - UNAB 2025 ©️</sub></center>", unsafe_allow_html=True)
-
