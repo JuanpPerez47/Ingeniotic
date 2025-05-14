@@ -1,4 +1,9 @@
 import streamlit as st
+
+# ❗Esta debe ser la PRIMERA instrucción Streamlit
+st.set_page_config(page_title="Sistema de Reconocimiento de Objetos", layout="wide")
+
+# ✅ Luego importa lo demás
 from PIL import Image
 import cv2
 import numpy as np
@@ -10,11 +15,11 @@ from gtts import gTTS
 
 # Cargar modelos
 modelo_objetos = YOLO("best.pt")  # Reemplaza con tu modelo entrenado si no es el original de yolov8n
+
+# Mostrar clases después de set_page_config
 st.write("Clases del modelo:", modelo_objetos.names)
 
-# Configuración de la página
-st.set_page_config(page_title="Sistema de Reconocimiento de Objetos", layout="wide")
-
+# Encabezado
 st.image("Vogue Editors.jpeg", width=1200)
 st.markdown(
     "<h2 style='text-align: center; color: #003366;'>Sistema de Detección de Objetos en Laboratorio</h2>",
@@ -27,7 +32,6 @@ with st.sidebar:
     st.title("Reconocimiento de imagen/video")
     st.subheader("Detección de objetos con Yolov8")
     confianza = st.slider("Seleccione el nivel de confianza", 0, 100, 50) / 100
-    frame_interval = st.slider("Intervalo de fotogramas (1 cada N)", 1, 10, 3)
 
 # Entradas
 archivo_imagen = st.file_uploader("📁 Subir imagen", type=["jpg", "jpeg", "png"])
@@ -80,36 +84,23 @@ if procesar:
 
     elif archivo_video:
         st.subheader("🎞️ Procesamiento de video")
-
-        # Guardar temporalmente el video
         temp_video_path = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
         temp_video_path.write(archivo_video.read())
-        temp_video_path.close()
 
         cap = cv2.VideoCapture(temp_video_path.name)
         stframe = st.empty()
-
-        frame_count = 0
         while cap.isOpened():
             ret, frame = cap.read()
             if not ret:
                 break
-
-            # Procesar solo 1 de cada N frames
-            frame_count += 1
-            if frame_count % frame_interval != 0:
-                continue
-
             resultados = modelo_objetos(frame, conf=confianza)[0]
             for box in resultados.boxes:
                 x1, y1, x2, y2 = map(int, box.xyxy[0])
-                cls_id = int(box.cls[0])
-                conf_val = float(box.conf[0])
-                label = modelo_objetos.names[cls_id]
+                label = modelo_objetos.names[int(box.cls[0])]
+                conf = float(box.conf[0])
                 cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                cv2.putText(frame, f"{label} {conf_val:.2f}", (x1, y1 - 10),
+                cv2.putText(frame, f"{label} {conf:.2f}", (x1, y1 - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
-
             stframe.image(frame, channels="BGR")
 
         cap.release()
