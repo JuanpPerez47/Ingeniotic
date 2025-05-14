@@ -20,7 +20,7 @@ modelo_objetos = YOLO("best.pt")  # Reemplaza con tu modelo entrenado si no es e
 st.write("Clases del modelo:", modelo_objetos.names)
 
 # Encabezado
-st.image("Vogue Editors.jpeg", width=1200)
+st.image("center.jpg", width=1200)
 st.markdown(
     "<h2 style='text-align: center; color: #003366;'>Sistema de Detección de Objetos en Laboratorio</h2>",
     unsafe_allow_html=True,
