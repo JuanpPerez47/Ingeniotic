@@ -11,6 +11,8 @@ from gtts import gTTS
 # Cargar modelos
 modelo_objetos = YOLO("best.pt")  # Reemplaza con tu modelo entrenado si no es el original de yolov8n
 
+st.write("Clases del modelo:", modelo_objetos.names)
+
 # Configuración de la página
 st.set_page_config(page_title="Sistema de Reconocimiento de Objetos", layout="wide")
 
